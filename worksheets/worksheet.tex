@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{booktabs}
+\geometry{margin=1in}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+% Noto Serif is not available in pdflatex; use a similar high-quality serif
+\usepackage{mathptmx}
+
+\begin{document}
+\begin{center}
+  {\LARGE Hoja de trabajo: Países hispanohablantes y sus capitales}\\[4pt]
+  {\large Une cada país con su capital}
+\end{center}
+
+\vspace{0.5cm}
+
+% Two columns: Countries (numbered) and Capitals (lettered)
+\begin{multicols}{2}
+\textbf{Países}
+\begin{enumerate}[label=\arabic*.]
+\item Argentina
+\item Bolivia
+\item Chile
+\item Colombia
+\item Costa Rica
+\item Cuba
+\item Ecuador
+\item El Salvador
+\item España
+\item Guatemala
+\item Guinea Ecuatorial
+\item Honduras
+\item México
+\item Nicaragua
+\item Panamá
+\item Paraguay
+\item Perú
+\item Puerto Rico
+\item República Dominicana
+\item Uruguay
+\item Venezuela
+\end{enumerate}
+
+\columnbreak
+
+\textbf{Capitales}
+\begin{enumerate}[label=\Alph*.]
+\item Buenos Aires
+\item Sucre
+\item Santiago
+\item Bogotá
+\item San José
+\item La Habana
+\item Quito
+\item San Salvador
+\item Madrid
+\item Ciudad de Guatemala
+\item Malabo
+\item Tegucigalpa
+\item Ciudad de México
+\item Managua
+\item Ciudad de Panamá
+\item Asunción
+\item Lima
+\item San Juan
+\item Santo Domingo
+\item Montevideo
+\item Caracas
+\end{enumerate}
+\end{multicols}
+
+\vfill
+Nombre: \rule{6cm}{0.4pt} \hfill Fecha: \rule{3cm}{0.4pt}
+
+\end{document} 
