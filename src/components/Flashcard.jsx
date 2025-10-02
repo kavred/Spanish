@@ -41,7 +41,7 @@ export default function Flashcard() {
         aria-live="polite"
       >
         <div className="text-sm text-slate-300 mb-2">
-          {askFor === 'capital' ? 'Pregunta: ¿Cuál es la capital?' : 'Pregunta: ¿A qué país pertenece esta capital?'}
+          {askFor === 'capital' ? 'Question: What is the capital?' : 'Question: Which country does this capital belong to?'}
         </div>
         <div className="text-3xl md:text-4xl font-semibold tracking-wide text-neon-blue">
           {question}
@@ -49,9 +49,9 @@ export default function Flashcard() {
         <button
           className="mt-6 px-4 py-2 rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-blue"
           onClick={() => setShowAnswer((s) => !s)}
-          aria-label="Voltear tarjeta"
+          aria-label="Flip card"
         >
-          {showAnswer ? 'Ocultar respuesta' : 'Mostrar respuesta'}
+          {showAnswer ? 'Hide answer' : 'Show answer'}
         </button>
         {showAnswer && (
           <div className="mt-6 text-2xl md:text-3xl text-neon-green">
@@ -64,19 +64,19 @@ export default function Flashcard() {
         <button
           onClick={goPrev}
           className="px-4 py-2 rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-neon-purple"
-          aria-label="Anterior"
-          title="Anterior"
+          aria-label="Previous"
+          title="Previous"
         >
-          ◀ Anterior
+          ◀ Previous
         </button>
         <div className="text-slate-400 text-sm">{index + 1} / {sequence.length}</div>
         <button
           onClick={goNext}
           className="px-4 py-2 rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-neon-purple"
-          aria-label="Siguiente"
-          title="Siguiente"
+          aria-label="Next"
+          title="Next"
         >
-          Siguiente ▶
+          Next ▶
         </button>
       </div>
     </div>

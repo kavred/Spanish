@@ -25,7 +25,7 @@ export default function ProgressTracker() {
 
   return (
     <div className="w-full max-w-3xl glass rounded-2xl p-6 fade-in">
-      <div className="text-2xl font-semibold text-neon-blue mb-4">Progreso por país</div>
+      <div className="text-2xl font-semibold text-neon-blue mb-4">Progress by Country</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {data.map(({ country }) => {
           const stats = progress[country] || { attempts: 0, correct: 0 };
@@ -35,13 +35,13 @@ export default function ProgressTracker() {
               <div className="flex items-center justify-between">
                 <div className="font-semibold">{country}</div>
                 <div className={pct >= 70 ? 'text-green-400' : pct >= 40 ? 'text-yellow-300' : 'text-red-400'}>
-                  {pct}% dominado
+                  {pct}% mastered
                 </div>
               </div>
               <div className="mt-2 w-full bg-white/10 rounded-full h-2 overflow-hidden">
                 <div className="h-2 bg-gradient-to-r from-neon-blue to-neon-green" style={{ width: `${pct}%` }} />
               </div>
-              <div className="mt-1 text-xs text-slate-400">{stats.correct} correctas de {stats.attempts} intentos</div>
+              <div className="mt-1 text-xs text-slate-400">{stats.correct} correct out of {stats.attempts} attempts</div>
             </div>
           );
         })}
@@ -50,9 +50,9 @@ export default function ProgressTracker() {
         <button
           onClick={() => { localStorage.removeItem('progress'); setProgress({}); }}
           className="px-4 py-2 rounded-lg glass hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-neon-purple"
-          aria-label="Restablecer progreso"
+          aria-label="Reset progress"
         >
-          Restablecer progreso
+          Reset Progress
         </button>
       </div>
     </div>

@@ -10,7 +10,7 @@ function generateWorksheetPdf(withAnswers = false) {
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
   const margin = 48;
   const width = doc.internal.pageSize.getWidth() - margin * 2;
-  const title = withAnswers ? 'Hoja de respuestas: Países y capitales' : 'Hoja de trabajo: Países y capitales';
+  const title = withAnswers ? 'Answer Key: Countries and Capitals' : 'Worksheet: Countries and Capitals';
 
   doc.setFont('times', 'normal');
   doc.setFontSize(20);
@@ -30,7 +30,7 @@ function generateWorksheetPdf(withAnswers = false) {
     .sort(() => Math.random() - 0.5);
 
   let y = margin + 28;
-  doc.text('Une cada país con su capital correspondiente.', margin, y);
+  doc.text('Match each country with its corresponding capital.', margin, y);
   y += 20;
 
   const colWidth = width / 2 - 12;
@@ -45,7 +45,7 @@ function generateWorksheetPdf(withAnswers = false) {
   if (withAnswers) {
     y += pairs.length * 18 + 28;
     doc.setFontSize(14);
-    doc.text('Clave de respuestas:', margin, y);
+    doc.text('Answer Key:', margin, y);
     doc.setFontSize(12);
     y += 16;
     pairs.forEach((p, idx) => {
@@ -54,7 +54,7 @@ function generateWorksheetPdf(withAnswers = false) {
     });
   }
 
-  const filename = withAnswers ? 'hoja_respuestas_paises_capitales.pdf' : 'hoja_trabajo_paises_capitales.pdf';
+  const filename = withAnswers ? 'answer_key_countries_capitals.pdf' : 'worksheet_countries_capitals.pdf';
   doc.save(filename);
 }
 
@@ -83,40 +83,40 @@ export default function App() {
     <div className="min-h-screen px-4 py-8 flex flex-col items-center">
       <header className="w-full max-w-5xl flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="text-2xl md:text-3xl font-bold tracking-wide">
-          <span className="text-neon-blue">Países</span> <span className="text-neon-purple">y</span> <span className="text-neon-green">Capitales</span>
+          <span className="text-neon-blue">Countries</span> <span className="text-neon-purple">&</span> <span className="text-neon-green">Capitals</span>
         </div>
         <nav className="flex flex-wrap items-center gap-2">
           <NavButton id="flashcards" aria="Flashcards">Flashcards</NavButton>
-          <NavButton id="quiz" aria="Cuestionario">Cuestionario</NavButton>
-          <NavButton id="progress" aria="Progreso">Progreso</NavButton>
+          <NavButton id="quiz" aria="Quiz">Quiz</NavButton>
+          <NavButton id="progress" aria="Progress">Progress</NavButton>
           <button
             onClick={() => generateWorksheetPdf(false)}
             className="px-4 py-2 rounded-lg bg-gradient-to-r from-neon-green to-neon-blue text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-green"
-            aria-label="Descargar hoja de trabajo"
-            title="Descargar hoja de trabajo (PDF)"
+            aria-label="Download worksheet"
+            title="Download worksheet (PDF)"
           >
-            Descargar hoja (PDF)
+            Download Worksheet (PDF)
           </button>
           <button
             onClick={() => generateWorksheetPdf(true)}
             className="px-4 py-2 rounded-lg glass hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-neon-purple"
-            aria-label="Descargar clave de respuestas"
-            title="Descargar clave de respuestas (PDF)"
+            aria-label="Download answer key"
+            title="Download answer key (PDF)"
           >
-            Clave (PDF)
+            Answer Key (PDF)
           </button>
         </nav>
       </header>
 
       <main className="mt-10 w-full flex-1 flex items-start justify-center">
-        <Suspense fallback={<div className="text-slate-300">Cargando…</div>}>
+        <Suspense fallback={<div className="text-slate-300">Loading…</div>}>
           {view === 'flashcards' && <Flashcard />}
           {view === 'quiz' && <Quiz />}
           {view === 'progress' && <ProgressTracker />}
         </Suspense>
       </main>
 
-      <footer className="mt-10 text-xs text-slate-500">&copy; {new Date().getFullYear()} Estudio Interactivo</footer>
+      <footer className="mt-10 text-xs text-slate-500">&copy; {new Date().getFullYear()} Interactive Learning</footer>
     </div>
   );
 } 

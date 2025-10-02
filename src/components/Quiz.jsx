@@ -85,14 +85,14 @@ export default function Quiz() {
   if (done) {
     return (
       <div className="w-full max-w-2xl glass rounded-2xl p-8 text-center fade-in">
-        <div className="text-3xl font-semibold text-neon-purple">Resultado final</div>
+        <div className="text-3xl font-semibold text-neon-purple">Final Score</div>
         <div className="mt-4 text-2xl">{correctCount} / {questions.length}</div>
         <button
           onClick={retry}
           className="mt-6 px-4 py-2 rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-blue"
-          aria-label="Reintentar"
+          aria-label="Retry"
         >
-          Reintentar
+          Retry
         </button>
       </div>
     );
@@ -101,7 +101,7 @@ export default function Quiz() {
   return (
     <div className="w-full max-w-2xl glass rounded-2xl p-8 fade-in">
       <div className="text-sm text-slate-300 mb-2">
-        {askFor === 'capital' ? 'Selecciona la capital correcta para:' : 'Selecciona el país correcto para:'}
+        {askFor === 'capital' ? 'Select the correct capital for:' : 'Select the correct country for:'}
       </div>
       <div className="text-2xl md:text-3xl font-semibold text-neon-green">{askFor === 'capital' ? current.country : current.capital}</div>
 
@@ -118,7 +118,7 @@ export default function Quiz() {
                 isCorrect ? 'bg-green-500/20 ring-green-400' : '',
                 isIncorrect ? 'bg-red-500/20 ring-red-400' : '',
               ].join(' ')}
-              aria-label={`Opción ${opt}`}
+              aria-label={`Option ${opt}`}
             >
               {opt}
             </button>
@@ -126,25 +126,25 @@ export default function Quiz() {
         })}
       </div>
 
-      {answered && (
-        <div className="mt-4 text-sm">
-          {selected === correctAnswer ? (
-            <span className="text-green-400">¡Correcto!</span>
-          ) : (
-            <span className="text-red-400">Incorrecto, la respuesta es {correctAnswer}.</span>
-          )}
-        </div>
-      )}
+        {answered && (
+          <div className="mt-4 text-sm">
+            {selected === correctAnswer ? (
+              <span className="text-green-400">Correct!</span>
+            ) : (
+              <span className="text-red-400">Incorrect, the answer is {correctAnswer}.</span>
+            )}
+          </div>
+        )}
 
       <div className="mt-6 flex items-center justify-between">
-        <div className="text-slate-400">Pregunta {index + 1} / {questions.length}</div>
+        <div className="text-slate-400">Question {index + 1} / {questions.length}</div>
         <button
           onClick={nextQuestion}
           disabled={!answered}
           className="px-4 py-2 rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple text-black font-semibold disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-neon-purple"
-          aria-label="Siguiente pregunta"
+          aria-label="Next question"
         >
-          Siguiente
+          Next
         </button>
       </div>
     </div>
