@@ -35,44 +35,44 @@ export default function Flashcard() {
   }
 
   return (
-    <div className="w-full flex flex-col items-center gap-6 fade-in">
+    <div className="w-full flex flex-col items-center gap-[2vh] fade-in">
       <div
-        className="glass rounded-2xl p-8 w-full max-w-2xl text-center shadow-glow transition-transform duration-500 [transform-style:preserve-3d]"
+        className="glass rounded-2xl p-[clamp(1rem,4vw,2rem)] w-full max-w-[90vw] text-center shadow-glow transition-transform duration-500 [transform-style:preserve-3d]"
         aria-live="polite"
       >
-        <div className="text-sm text-slate-300 mb-2">
+        <div className="text-[clamp(0.875rem,2.5vw,1rem)] text-slate-300 mb-2">
           {askFor === 'capital' ? 'Question: What is the capital?' : 'Question: Which country does this capital belong to?'}
         </div>
-        <div className="text-3xl md:text-4xl font-semibold tracking-wide text-neon-blue">
+        <div className="text-[clamp(1.5rem,6vw,2.5rem)] font-semibold tracking-wide text-neon-blue">
           {question}
         </div>
         <button
-          className="mt-6 px-4 py-2 rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-blue"
+          className="mt-[1.5vh] px-[clamp(1rem,3vw,1rem)] py-[clamp(0.5rem,2vw,0.5rem)] rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-blue"
           onClick={() => setShowAnswer((s) => !s)}
           aria-label="Flip card"
         >
           {showAnswer ? 'Hide answer' : 'Show answer'}
         </button>
         {showAnswer && (
-          <div className="mt-6 text-2xl md:text-3xl text-neon-green">
+          <div className="mt-[1.5vh] text-[clamp(1.25rem,4vw,1.875rem)] text-neon-green">
             {answer}
           </div>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-[0.75vw]">
         <button
           onClick={goPrev}
-          className="px-4 py-2 rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-neon-purple"
+          className="px-[clamp(1rem,3vw,1rem)] py-[clamp(0.5rem,2vw,0.5rem)] rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-neon-purple"
           aria-label="Previous"
           title="Previous"
         >
           ◀ Previous
         </button>
-        <div className="text-slate-400 text-sm">{index + 1} / {sequence.length}</div>
+        <div className="text-slate-400 text-[clamp(0.875rem,2.5vw,1rem)]">{index + 1} / {sequence.length}</div>
         <button
           onClick={goNext}
-          className="px-4 py-2 rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-neon-purple"
+          className="px-[clamp(1rem,3vw,1rem)] py-[clamp(0.5rem,2vw,0.5rem)] rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-neon-purple"
           aria-label="Next"
           title="Next"
         >

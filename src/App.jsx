@@ -61,6 +61,14 @@ function generateWorksheetPdf(withAnswers = false) {
 export default function App() {
   const [view, setView] = useState('flashcards');
 
+  // Handle hash navigation
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash === 'progress') {
+      setView('progress');
+    }
+  }, []);
+
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
@@ -69,7 +77,7 @@ export default function App() {
     <button
       onClick={() => setView(id)}
       className={[
-        'px-4 py-2 rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2',
+        'px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.5rem)] rounded-lg glass hover:bg-white/10 transition-colors focus:outline-none focus:ring-2',
         view === id ? 'ring-neon-blue' : 'ring-transparent',
       ].join(' ')}
       aria-label={aria}
@@ -80,35 +88,27 @@ export default function App() {
   );
 
   return (
-    <div className="min-h-screen px-4 py-8 flex flex-col items-center">
-      <header className="w-full max-w-5xl flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div className="text-2xl md:text-3xl font-bold tracking-wide">
+    <div className="min-h-screen px-[2vw] py-[2vh] flex flex-col items-center">
+      <header className="w-full max-w-[90vw] flex flex-col md:flex-row md:items-center md:justify-between gap-[2vw]">
+        <div className="text-[clamp(1.5rem,5vw,2.5rem)] font-bold tracking-wide">
           <span className="text-neon-blue">Countries</span> <span className="text-neon-purple">&</span> <span className="text-neon-green">Capitals</span>
         </div>
-        <nav className="flex flex-wrap items-center gap-2">
+        <nav className="flex flex-wrap items-center gap-[0.5vw]">
           <NavButton id="flashcards" aria="Flashcards">Flashcards</NavButton>
           <NavButton id="quiz" aria="Quiz">Quiz</NavButton>
           <NavButton id="progress" aria="Progress">Progress</NavButton>
           <button
             onClick={() => generateWorksheetPdf(false)}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-neon-green to-neon-blue text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-green"
+            className="px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.5rem)] rounded-lg bg-gradient-to-r from-neon-green to-neon-blue text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-green"
             aria-label="Download worksheet"
             title="Download worksheet (PDF)"
           >
             Download Worksheet (PDF)
           </button>
-          <button
-            onClick={() => generateWorksheetPdf(true)}
-            className="px-4 py-2 rounded-lg glass hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-neon-purple"
-            aria-label="Download answer key"
-            title="Download answer key (PDF)"
-          >
-            Answer Key (PDF)
-          </button>
         </nav>
       </header>
 
-      <main className="mt-10 w-full flex-1 flex items-start justify-center">
+      <main className="mt-[2vh] w-full flex-1 flex items-start justify-center">
         <Suspense fallback={<div className="text-slate-300">Loading…</div>}>
           {view === 'flashcards' && <Flashcard />}
           {view === 'quiz' && <Quiz />}
@@ -116,7 +116,7 @@ export default function App() {
         </Suspense>
       </main>
 
-      <footer className="mt-10 text-xs text-slate-500">&copy; {new Date().getFullYear()} Interactive Learning</footer>
+      <footer className="mt-[2vh] text-[clamp(0.75rem,2vw,0.875rem)] text-slate-500">&copy; {new Date().getFullYear()} Interactive Learning</footer>
     </div>
   );
 } 
