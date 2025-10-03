@@ -6,11 +6,11 @@ const Flashcard = lazy(() => import('./components/Flashcard.jsx'));
 const Quiz = lazy(() => import('./components/Quiz.jsx'));
 const ProgressTracker = lazy(() => import('./components/ProgressTracker.jsx'));
 
-function generateWorksheetPdf(withAnswers = false) {
+function generateWorksheetPdf() {
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
   const margin = 48;
   const width = doc.internal.pageSize.getWidth() - margin * 2;
-  const title = withAnswers ? 'Answer Key: Countries and Capitals' : 'Worksheet: Countries and Capitals';
+  const title = 'Worksheet: Countries and Capitals';
 
   doc.setFont('times', 'normal');
   doc.setFontSize(20);
@@ -42,19 +42,87 @@ function generateWorksheetPdf(withAnswers = false) {
     doc.text(r, margin + colWidth + 24, rowY);
   }
 
-  if (withAnswers) {
-    y += pairs.length * 18 + 28;
-    doc.setFontSize(14);
-    doc.text('Answer Key:', margin, y);
-    doc.setFontSize(12);
-    y += 16;
-    pairs.forEach((p, idx) => {
-      const letter = String.fromCharCode(65 + right.findIndex((r) => r.endsWith(p.capital)));
-      doc.text(`${idx + 1} → ${letter}`, margin, y + idx * 16);
-    });
-  }
+  const filename = 'worksheet_countries_capitals.pdf';
+  doc.save(filename);
+}
 
-  const filename = withAnswers ? 'answer_key_countries_capitals.pdf' : 'worksheet_countries_capitals.pdf';
+function generateStatsPdf() {
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const margin = 48;
+  const width = doc.internal.pageSize.getWidth() - margin * 2;
+  
+  // Load progress data
+  const progress = JSON.parse(localStorage.getItem('progress') || '{}');
+  
+  doc.setFont('times', 'normal');
+  doc.setFontSize(20);
+  doc.text('Learning Statistics Report', margin, margin);
+  doc.setFontSize(12);
+  
+  let y = margin + 40;
+  
+  // Overall stats
+  const totalAttempts = Object.values(progress).reduce((sum, stats) => sum + stats.attempts, 0);
+  const totalCorrect = Object.values(progress).reduce((sum, stats) => sum + stats.correct, 0);
+  const overallAccuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
+  
+  doc.setFontSize(14);
+  doc.text('Overall Performance', margin, y);
+  doc.setFontSize(12);
+  y += 20;
+  doc.text(`Total Questions Answered: ${totalAttempts}`, margin, y);
+  y += 16;
+  doc.text(`Total Correct: ${totalCorrect}`, margin, y);
+  y += 16;
+  doc.text(`Overall Accuracy: ${overallAccuracy}%`, margin, y);
+  y += 30;
+  
+  // Most missed countries
+  const countryStats = data.map(country => {
+    const stats = progress[country.country] || { attempts: 0, correct: 0 };
+    const accuracy = stats.attempts > 0 ? (stats.correct / stats.attempts) * 100 : 0;
+    const missed = stats.attempts - stats.correct;
+    return {
+      ...country,
+      accuracy,
+      missed,
+      attempts: stats.attempts
+    };
+  }).sort((a, b) => b.missed - a.missed);
+  
+  doc.setFontSize(14);
+  doc.text('Most Challenging Countries', margin, y);
+  doc.setFontSize(12);
+  y += 20;
+  
+  const topMissed = countryStats.slice(0, 10);
+  topMissed.forEach((country, idx) => {
+    if (country.attempts > 0) {
+      doc.text(`${idx + 1}. ${country.country} - ${country.capital}`, margin, y);
+      y += 16;
+      doc.text(`  Missed: ${country.missed} times, Accuracy: ${Math.round(country.accuracy)}%`, margin + 20, y);
+      y += 16;
+    }
+  });
+  
+  y += 20;
+  
+  // Mastery levels
+  const mastered = countryStats.filter(c => c.accuracy >= 70).length;
+  const learning = countryStats.filter(c => c.accuracy > 0 && c.accuracy < 70).length;
+  const notStarted = countryStats.filter(c => c.attempts === 0).length;
+  
+  doc.setFontSize(14);
+  doc.text('Mastery Levels', margin, y);
+  doc.setFontSize(12);
+  y += 20;
+  doc.text(`Mastered (70%+): ${mastered} countries`, margin, y);
+  y += 16;
+  doc.text(`Learning (0-69%): ${learning} countries`, margin, y);
+  y += 16;
+  doc.text(`Not Started: ${notStarted} countries`, margin, y);
+  
+  const filename = `learning_stats_${new Date().toISOString().split('T')[0]}.pdf`;
   doc.save(filename);
 }
 
@@ -98,12 +166,20 @@ export default function App() {
           <NavButton id="quiz" aria="Quiz">Quiz</NavButton>
           <NavButton id="progress" aria="Progress">Progress</NavButton>
           <button
-            onClick={() => generateWorksheetPdf(false)}
+            onClick={() => generateWorksheetPdf()}
             className="px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.5rem)] rounded-lg bg-gradient-to-r from-neon-green to-neon-blue text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-green"
             aria-label="Download worksheet"
             title="Download worksheet (PDF)"
           >
             Download Worksheet (PDF)
+          </button>
+          <button
+            onClick={() => generateStatsPdf()}
+            className="px-[clamp(0.75rem,2vw,1rem)] py-[clamp(0.5rem,1.5vw,0.5rem)] rounded-lg glass hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-neon-purple"
+            aria-label="Download stats"
+            title="Download learning statistics (PDF)"
+          >
+            Download Stats (PDF)
           </button>
         </nav>
       </header>

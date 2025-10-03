@@ -56,6 +56,23 @@ export default function Quiz() {
     }
   }, [availableQuestions]);
 
+  // Check if we need to refresh questions after each answer
+  useEffect(() => {
+    const updatedAvailableQuestions = data.filter(item => {
+      const stats = progress[item.country] || { attempts: 0, correct: 0 };
+      const mastery = stats.attempts === 0 ? 0 : (stats.correct / stats.attempts) * 100;
+      return mastery < 70;
+    });
+    
+    if (updatedAvailableQuestions.length === 0) {
+      setShowCompletion(true);
+    } else if (updatedAvailableQuestions.length !== availableQuestions.length) {
+      // Refresh questions if some have been mastered
+      setCurrentQuestions(shuffle([...updatedAvailableQuestions]));
+      setIndex(0);
+    }
+  }, [progress, availableQuestions.length]);
+
   const questions = currentQuestions;
 
   useEffect(() => {
@@ -98,7 +115,14 @@ export default function Quiz() {
   function nextQuestion() {
     setAnswered(false);
     setSelected(null);
-    setIndex((i) => i + 1);
+    
+    // If we've reached the end of current questions, reshuffle and start over
+    if (index + 1 >= questions.length) {
+      setCurrentQuestions(shuffle([...availableQuestions]));
+      setIndex(0);
+    } else {
+      setIndex((i) => i + 1);
+    }
   }
 
   function retry() {
@@ -117,8 +141,6 @@ export default function Quiz() {
     window.location.hash = '#progress';
     window.location.reload();
   }
-
-  const done = index >= questions.length;
 
   if (showCompletion) {
     return (
@@ -146,21 +168,6 @@ export default function Quiz() {
     );
   }
 
-  if (done) {
-    return (
-      <div className="w-full max-w-[90vw] glass rounded-2xl p-[clamp(1rem,4vw,2rem)] text-center fade-in">
-        <div className="text-[clamp(1.5rem,5vw,2rem)] font-semibold text-neon-purple">Final Score</div>
-        <div className="mt-[1vh] text-[clamp(1.25rem,4vw,1.5rem)]">{correctCount} / {questions.length}</div>
-        <button
-          onClick={retry}
-          className="mt-[1.5vh] px-[clamp(1rem,3vw,1rem)] py-[clamp(0.5rem,2vw,0.5rem)] rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple text-black font-semibold hover:scale-105 active:scale-95 transition-transform focus:outline-none focus:ring-2 focus:ring-neon-blue"
-          aria-label="Retry"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full max-w-[90vw] glass rounded-2xl p-[clamp(1rem,4vw,2rem)] fade-in">
@@ -201,7 +208,9 @@ export default function Quiz() {
         )}
 
         <div className="mt-[1.5vh] flex items-center justify-between">
-          <div className="text-slate-400 text-[clamp(0.875rem,2.5vw,1rem)]">Question {index + 1} / {questions.length}</div>
+          <div className="text-slate-400 text-[clamp(0.875rem,2.5vw,1rem)]">
+            Questions remaining: {availableQuestions.length}
+          </div>
           <button
             onClick={nextQuestion}
             disabled={!answered}
