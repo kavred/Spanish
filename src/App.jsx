@@ -192,7 +192,7 @@ export default function App() {
         </Suspense>
       </main>
 
-      <footer className="mt-[2vh] text-[clamp(0.75rem,2vw,0.875rem)] text-slate-500">&copy; {new Date().getFullYear()} Interactive Learning</footer>
+      <footer className="mt-[2vh] text-[clamp(0.75rem,2vw,0.875rem)] text-slate-500">&copy; {new Date().getFullYear()} Made by Kavin S.</footer>
     </div>
   );
 } 
